@@ -1,10 +1,22 @@
 version: '3'
 services:
   postgres:
-    image: 'postgres:12.2'
+    image: 'postgres:latest'
+    environment:
+      - PGPASSWORD=postgres_password
   redis:
-    image: 'redis:6.0-rc2'
-  server:
+    image: 'redis:latest'
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+  api:
     build:
       dockerfile: Dockerfile.dev
       context: ./server
