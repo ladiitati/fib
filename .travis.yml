@@ -3,20 +3,20 @@ services:
   - docker
 
 before_instal:
-  - docker build -t alfonsohooker/fib -f ./client/Dockerfile.dev ./client
+  - docker build -t tfadams/fib -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run alfonsohooker/fib npm test -- --coverage
+  - docker run tfadams/fib npm test -- --coverage
 
 after_success:
-  - docker build -t alfonsohooker/fib-client ./client
-  - docker build -t alfonsohooker/fib-nginx ./nginx
-  - docker build -t alfonsohooker/fib-server ./server
-  - docker build -t alfonsohooker/fib-worker ./worker
+  - docker build -t tfadams/fib-client ./client
+  - docker build -t tfadams/fib-nginx ./nginx
+  - docker build -t tfadams/fib-server ./server
+  - docker build -t tfadams/fib-worker ./worker
   # Login to Docker CLI
-  - echo "$DOCKER_PASSWD" | docker login -u "DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push alfonsohooker/fib-client
-  - docker push alfonsohooker/fib-nginx
-  - docker push alfonsohooker/fib-server
-  - docker push alfonsohooker/fib-worker
+  - docker push tfadams/fib-client
+  - docker push tfadams/fib-nginx
+  - docker push tfadams/fib-server
+  - docker push tfadams/fib-worker
