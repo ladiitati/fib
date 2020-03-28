@@ -2,7 +2,7 @@ sudo: required
 services:
   - docker
 
-before_instal:
+before_install:
   - docker build -t tfadams/fib -f ./client/Dockerfile.dev ./client
 
 script:
@@ -20,3 +20,15 @@ after_success:
   - docker push tfadams/fib-nginx
   - docker push tfadams/fib-server
   - docker push tfadams/fib-worker
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "fib-app"
+  env: "FibApp-env"
+  bucket_name: "elasticbeanstalk-us-east-1-967195537723"
+  bucket_path: "fib-app"
+  on:
+    branch: master
+  access_key_id: $aws_devop_access_key
+  secret_access_key: $aws_devop_secret_key
